@@ -1,0 +1,315 @@
+<!--
+  User Profile Component Template
+  
+  Displays user account information
+-->
+
+<div class="container py-4">
+  <!--
+    Page header
+  -->
+  <div class="mb-4">
+    <h2>My Profile</h2>
+    <p class="text-muted">View your account information</p>
+  </div>
+
+  <!--
+    Error message
+  -->
+  <app-error-message 
+    *ngIf="errorMessage" 
+    [message]="errorMessage"
+    (close)="errorMessage = ''">
+  </app-error-message>
+
+  <!--
+    Success message
+  -->
+  <div *ngIf="successMessage" class="alert alert-success alert-dismissible fade show" role="alert">
+    <i class="bi bi-check-circle me-2"></i>
+    {{ successMessage }}
+    <button type="button" class="btn-close" (click)="successMessage = ''" aria-label="Close"></button>
+  </div>
+
+  <!--
+    Loading spinner
+  -->
+  <app-loading-spinner 
+    *ngIf="isLoading" 
+    [message]="'Loading profile...'"
+    [size]="'large'">
+  </app-loading-spinner>
+
+  <!--
+    Profile content
+  -->
+  <div *ngIf="!isLoading && user" class="row">
+    <!--
+      Main profile card
+    -->
+    <div class="col-lg-8">
+      <div class="card shadow-sm mb-4">
+        <div class="card-body">
+          <!--
+            Profile header with avatar
+          -->
+          <div class="d-flex align-items-center mb-4 pb-4 border-bottom">
+            <!--
+              Avatar placeholder
+              Using Bootstrap icon as simple avatar
+              Could be replaced with actual user photo upload
+            -->
+            <div class="profile-avatar me-4">
+              <i class="bi bi-person-circle"></i>
+            </div>
+
+            <!--
+              User name and email
+            -->
+            <div>
+              <h3 class="mb-1">{{ user.firstName }} {{ user.lastName }}</h3>
+              <p class="text-muted mb-0">
+                <i class="bi bi-envelope me-2"></i>
+                {{ user.email }}
+              </p>
+            </div>
+          </div>
+
+          <!--
+            Profile details - View Mode
+          -->
+          <div *ngIf="!isEditMode" class="row g-4">
+            <!--
+              First Name
+            -->
+            <div class="col-md-6">
+              <div class="profile-field">
+                <label class="text-muted small mb-1">First Name</label>
+                <p class="mb-0 fw-semibold">{{ user.firstName }}</p>
+              </div>
+            </div>
+
+            <!--
+              Last Name
+            -->
+            <div class="col-md-6">
+              <div class="profile-field">
+                <label class="text-muted small mb-1">Last Name</label>
+                <p class="mb-0 fw-semibold">{{ user.lastName }}</p>
+              </div>
+            </div>
+
+            <!--
+              Email
+            -->
+            <div class="col-md-6">
+              <div class="profile-field">
+                <label class="text-muted small mb-1">Email Address</label>
+                <p class="mb-0 fw-semibold">{{ user.email }}</p>
+              </div>
+            </div>
+
+            <!--
+              Country (if available)
+            -->
+            <div class="col-md-6" *ngIf="user.country">
+              <div class="profile-field">
+                <label class="text-muted small mb-1">Country</label>
+                <p class="mb-0 fw-semibold">
+                  <i class="bi bi-geo-alt me-2"></i>
+                  {{ user.country }}
+                </p>
+              </div>
+            </div>
+
+            <!--
+              Member since
+            -->
+            <div class="col-md-6">
+              <div class="profile-field">
+                <label class="text-muted small mb-1">Member Since</label>
+                <p class="mb-0 fw-semibold">
+                  <i class="bi bi-calendar-check me-2"></i>
+                  {{ formatDate(user.createdAt) }}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!--
+            Profile details - Edit Mode
+          -->
+          <form *ngIf="isEditMode" [formGroup]="editForm" (ngSubmit)="onSubmit()">
+            <div class="row g-4">
+              <!--
+                First Name Input
+              -->
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label for="firstName" class="form-label">First Name (Optional)</label>
+                  <input 
+                    type="text" 
+                    class="form-control" 
+                    id="firstName"
+                    formControlName="firstName"
+                    [class.is-invalid]="isFieldInvalid('firstName')"
+                    placeholder="Enter first name">
+                  <div *ngIf="isFieldInvalid('firstName')" class="invalid-feedback">
+                    <span *ngIf="editForm.get('firstName')?.hasError('minlength')">
+                      First name must be at least 2 characters
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <!--
+                Last Name Input
+              -->
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label for="lastName" class="form-label">Last Name (Optional)</label>
+                  <input 
+                    type="text" 
+                    class="form-control" 
+                    id="lastName"
+                    formControlName="lastName"
+                    [class.is-invalid]="isFieldInvalid('lastName')"
+                    placeholder="Enter last name">
+                  <div *ngIf="isFieldInvalid('lastName')" class="invalid-feedback">
+                    <span *ngIf="editForm.get('lastName')?.hasError('minlength')">
+                      Last name must be at least 2 characters
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <!--
+                Email (Read-only)
+              -->
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label for="email" class="form-label">Email Address</label>
+                  <input 
+                    type="email" 
+                    class="form-control" 
+                    id="email"
+                    [value]="user.email"
+                    readonly
+                    disabled>
+                  <small class="text-muted">Email cannot be changed</small>
+                </div>
+              </div>
+
+              <!--
+                Country Input
+              -->
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label for="country" class="form-label">Country (Optional)</label>
+                  <input 
+                    type="text" 
+                    class="form-control" 
+                    id="country"
+                    formControlName="country"
+                    placeholder="Enter country">
+                </div>
+              </div>
+            </div>
+
+            <!--
+              Edit Form Actions
+            -->
+            <div class="mt-4 pt-4 border-top d-flex gap-2">
+              <button 
+                type="submit" 
+                class="btn btn-primary"
+                [disabled]="isSubmitting">
+                <span *ngIf="!isSubmitting">
+                  <i class="bi bi-check-circle me-2"></i>
+                  Save Changes
+                </span>
+                <span *ngIf="isSubmitting">
+                  <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                  Saving...
+                </span>
+              </button>
+              <button 
+                type="button" 
+                class="btn btn-outline-secondary"
+                (click)="cancelEdit()"
+                [disabled]="isSubmitting">
+                <i class="bi bi-x-circle me-2"></i>
+                Cancel
+              </button>
+            </div>
+          </form>
+
+          <!--
+            Edit profile button (view mode only)
+          -->
+          <div *ngIf="!isEditMode" class="mt-4 pt-4 border-top">
+            <button 
+              class="btn btn-primary" 
+              (click)="enterEditMode()">
+              <i class="bi bi-pencil me-2"></i>
+              Edit Profile
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--
+      Sidebar with quick actions
+    -->
+    <div class="col-lg-4">
+      <!--
+        Quick actions card
+      -->
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h6 class="card-title mb-3">
+            <i class="bi bi-lightning me-2"></i>
+            Quick Actions
+          </h6>
+
+          <div class="d-grid gap-2">
+            <a routerLink="/create-post" class="btn btn-primary btn-sm">
+              <i class="bi bi-plus-circle me-2"></i>
+              Create New Post
+            </a>
+            <a routerLink="/" class="btn btn-outline-secondary btn-sm">
+              <i class="bi bi-house me-2"></i>
+              Back to Home
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--
+  Future enhancements:
+  
+  1. Edit profile functionality:
+     - Modal or separate page for editing
+     - Update firstName, lastName, country
+     - Password change (separate form for security)
+  
+  2. User statistics:
+     - Actual post count from backend
+     - Comment count
+     - Reactions given/received
+     - Most popular posts
+  
+  3. User posts list:
+     - Show user's own posts below profile
+     - Edit/delete buttons on each post
+     - Pagination
+  
+  4. Avatar upload:
+     - Allow user to upload profile picture
+     - Image cropping/resizing
+     - Store in backend
+-->

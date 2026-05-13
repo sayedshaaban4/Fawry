@@ -1,0 +1,60 @@
+/**
+ * Register Component Styles
+ * 
+ * Same styling as login component
+ * Could be extracted to shared auth styles
+ */
+
+/**
+ * Card hover effect
+ */
+.card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+}
+
+/**
+ * Form control focus state
+ */
+.form-control:focus {
+  border-color: #0d6efd;
+  box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+}
+
+/**
+ * Button states
+ */
+.btn {
+  transition: all 0.3s ease;
+}
+
+.btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/**
+ * Link styling
+ */
+a {
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  text-decoration: underline !important;
+}
+
+/**
+ * Optional field label styling
+ * 
+ * Make the "(optional)" text smaller and grayed out
+ * Clearly indicates which fields are not required
+ */
+.text-muted {
+  font-size: 0.875rem;
+}

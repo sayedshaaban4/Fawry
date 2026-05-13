@@ -1,0 +1,86 @@
+/**
+ * Add Comment Component Styles
+ */
+
+/**
+ * Container styling
+ * 
+ * Card-like appearance
+ * Subtle background to distinguish from comment list
+ */
+.add-comment-container {
+  background-color: #f8f9fa;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+/**
+ * Textarea styling
+ * 
+ * Better focus state
+ * Smooth transitions
+ */
+.form-control {
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-control:focus {
+  border-color: #0d6efd;
+  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.15);
+}
+
+/**
+ * Submit button
+ * 
+ * Smooth hover effect
+ */
+.btn-primary {
+  transition: all 0.2s ease;
+}
+
+.btn-primary:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(13, 110, 253, 0.3);
+}
+
+/**
+ * Header styling
+ */
+h6 {
+  color: #495057;
+  font-weight: 600;
+}
+
+/**
+ * Icon color
+ */
+.bi-chat-left-dots {
+  color: #6c757d;
+}
+
+/**
+ * Form text helper
+ */
+.form-text {
+  font-size: 0.875rem;
+  color: #6c757d;
+  font-style: italic;
+}
+
+/**
+ * Disabled button state
+ */
+.btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+/**
+ * Spinner in button
+ */
+.spinner-border-sm {
+  width: 1rem;
+  height: 1rem;
+  border-width: 0.15em;
+}

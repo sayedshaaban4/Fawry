@@ -1,0 +1,95 @@
+<!--
+  Comment List Component Template
+  
+  Displays list of comments with pagination
+-->
+
+<div class="comment-list">
+  <!--
+    Loading state (initial load)
+    
+    Shows when no comments loaded yet
+  -->
+  <div *ngIf="isLoading && comments.length === 0" class="text-center py-4">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading comments...</span>
+    </div>
+    <p class="text-muted mt-2">Loading comments...</p>
+  </div>
+
+  <!--
+    Empty state (no comments)
+    
+    Shows when comments loaded but array is empty
+  -->
+  <div *ngIf="!isLoading && comments.length === 0" class="text-center text-muted py-4">
+    <i class="bi bi-chat-square display-4 mb-2"></i>
+    <p>No comments yet. Be the first to comment!</p>
+  </div>
+
+  <!--
+    Comments list
+    
+    Displays each comment in a card-like container
+    Responsive layout
+  -->
+  <div *ngIf="comments.length > 0" class="comments-container">
+    <!--
+      Individual comment
+      
+      Each comment shows:
+      - Author name with icon
+      - Comment date
+      - Comment content
+    -->
+    <div *ngFor="let comment of comments; trackBy: (i, c) => c.id" 
+         class="comment-item border-bottom py-3">
+      <div class="d-flex">
+        <!--
+          Author avatar (icon placeholder)
+          
+          Using Bootstrap icon as simple avatar
+          Could be replaced with actual user photos
+        -->
+        <div class="flex-shrink-0">
+          <i class="bi bi-person-circle fs-2 text-secondary"></i>
+        </div>
+
+        <!--
+          Comment content
+        -->
+        <div class="flex-grow-1 ms-3">
+          <!--
+            Comment header (author and date)
+          -->
+          <div class="d-flex justify-content-between align-items-start mb-1">
+            <h6 class="mb-0 fw-bold">{{ comment.authorName }}</h6>
+            <small class="text-muted">{{ formatDate(comment.createdAt) }}</small>
+          </div>
+
+          <!--
+            Comment text
+          -->
+          <p class="mb-0 comment-content">{{ comment.content }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--
+  Component behavior:
+  
+  1. Initial state: Shows loading spinner
+  2. After load with no comments: Shows "no comments" message
+  3. After load with comments: Shows comment list
+  4. If hasMore is true: Shows "Load More" button
+  5. Click "Load More": Emits loadMore event to parent
+  6. Parent fetches more comments and appends to array
+  7. Repeat until hasMore becomes false
+  
+  Data flow:
+  - Parent component manages data (fetch, pagination)
+  - This component only displays data
+  - Clean separation of concerns
+-->

@@ -1,0 +1,96 @@
+/**
+ * Post Form Component Styles
+ */
+
+/**
+ * Form control sizing
+ */
+.form-control-lg {
+  font-size: 1.25rem;
+  font-weight: 500;
+}
+
+/**
+ * Content textarea
+ * 
+ * Monospace font for better writing experience
+ * Similar to code editor
+ */
+textarea.form-control {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+/**
+ * Form section spacing
+ */
+.mb-4 {
+  margin-bottom: 1.5rem !important;
+}
+
+/**
+ * Required field indicator
+ */
+.text-danger {
+  font-weight: 600;
+}
+
+/**
+ * Card styling
+ */
+.card {
+  border-radius: 0.5rem;
+}
+
+/**
+ * Submit button
+ */
+.btn-primary {
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:not(:disabled):hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(13, 110, 253, 0.3);
+}
+
+/**
+ * Tag preview badges
+ */
+.badge {
+  font-size: 0.85rem;
+  padding: 0.35rem 0.65rem;
+}
+
+/**
+ * Tips card styling
+ */
+.bg-light {
+  background-color: #f8f9fa !important;
+}
+
+.card-body ul {
+  padding-left: 1.25rem;
+}
+
+.card-body ul li {
+  margin-bottom: 0.5rem;
+}
+
+/**
+ * Form text helper styling
+ */
+.form-text {
+  font-size: 0.875rem;
+  color: #6c757d;
+}
+
+/**
+ * Disabled button styling
+ */
+.btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}

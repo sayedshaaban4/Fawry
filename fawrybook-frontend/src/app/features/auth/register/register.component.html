@@ -1,0 +1,251 @@
+<!--
+  Register Component Template
+  
+  User registration form with validation
+  More fields than login (firstName, lastName, country)
+  Responsive Bootstrap layout
+-->
+
+<div class="row justify-content-center align-items-center min-vh-100 py-5">
+  <div class="col-md-8 col-lg-5">
+    <div class="card shadow">
+      <div class="card-header bg-primary text-white text-center">
+        <h3 class="mb-0">Create Account</h3>
+      </div>
+
+      <div class="card-body p-4">
+        <!-- Success message -->
+        <app-error-message 
+          *ngIf="successMessage" 
+          [message]="successMessage"
+          [type]="'info'"
+          [dismissible]="false">
+        </app-error-message>
+
+        <!-- Error message -->
+        <app-error-message 
+          *ngIf="errorMessage" 
+          [message]="errorMessage"
+          (close)="errorMessage = ''">
+        </app-error-message>
+
+        <!-- Loading spinner -->
+        <app-loading-spinner 
+          *ngIf="isLoading" 
+          [message]="'Creating your account...'">
+        </app-loading-spinner>
+
+        <!-- Registration form -->
+        <form *ngIf="!isLoading" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+          <!--
+            First Name and Last Name side by side
+            
+            .row: flexbox container
+            .g-2: gutter (gap) of 0.5rem between columns
+            
+            Why side by side:
+            - Saves vertical space
+            - Natural grouping (full name)
+            - Common pattern in forms
+          -->
+          <div class="row g-2 mb-3">
+            <!--
+              First Name field
+              
+              .col-md-6: 50% width on medium screens and up
+              On mobile: full width (stacks vertically)
+            -->
+            <div class="col-md-6">
+              <label for="firstName" class="form-label">First Name</label>
+              <input 
+                type="text" 
+                id="firstName"
+                class="form-control" 
+                formControlName="firstName"
+                placeholder="John"
+                [class.is-invalid]="isFieldInvalid('firstName')">
+              
+              <div class="invalid-feedback" *ngIf="hasError('firstName', 'required')">
+                First name is required
+              </div>
+            </div>
+
+            <!--
+              Last Name field
+              
+              Same structure as first name
+              Side by side on tablets/desktops
+            -->
+            <div class="col-md-6">
+              <label for="lastName" class="form-label">Last Name</label>
+              <input 
+                type="text" 
+                id="lastName"
+                class="form-control" 
+                formControlName="lastName"
+                placeholder="Doe"
+                [class.is-invalid]="isFieldInvalid('lastName')">
+              
+              <div class="invalid-feedback" *ngIf="hasError('lastName', 'required')">
+                Last name is required
+              </div>
+            </div>
+          </div>
+
+          <!--
+            Email field
+            
+            Full width (no row/col)
+            Required and must be valid email
+          -->
+          <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input 
+              type="email" 
+              id="email"
+              class="form-control" 
+              formControlName="email"
+              placeholder="john.doe@example.com"
+              [class.is-invalid]="isFieldInvalid('email')">
+            
+            <!--
+              Multiple error messages for email
+              
+              - required: field is empty
+              - email: invalid format (missing @, etc.)
+              
+              Only one shows at a time (browser checks required first)
+            -->
+            <div class="invalid-feedback" *ngIf="hasError('email', 'required')">
+              Email is required
+            </div>
+            <div class="invalid-feedback" *ngIf="hasError('email', 'email')">
+              Please enter a valid email address
+            </div>
+          </div>
+
+          <!--
+            Password field
+            
+            Has minimum length requirement (6 characters)
+            Unlike login, registration enforces password strength
+          -->
+          <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input 
+              type="password" 
+              id="password"
+              class="form-control" 
+              formControlName="password"
+              placeholder="At least 6 characters"
+              [class.is-invalid]="isFieldInvalid('password')">
+            
+            <!--
+              Password validation errors
+              
+              - required: field is empty
+              - minlength: less than 6 characters
+              
+              Why minLength:
+              - Backend requirement (see RegisterRequest.java)
+              - Basic security (prevents weak passwords like "123")
+              - Can show specific message: "Password must be at least 6 characters"
+            -->
+            <div class="invalid-feedback" *ngIf="hasError('password', 'required')">
+              Password is required
+            </div>
+            <div class="invalid-feedback" *ngIf="hasError('password', 'minlength')">
+              Password must be at least 6 characters
+            </div>
+          </div>
+
+          <!--
+            Country field (optional)
+            
+            No required validator
+            User can leave it blank
+            
+            Why optional:
+            - Not critical for account creation
+            - Can be added later
+            - Reduces registration friction (fewer required fields = more signups)
+          -->
+          <div class="mb-3">
+            <label for="country" class="form-label">
+              Country 
+              <small class="text-muted">(optional)</small>
+            </label>
+            <input 
+              type="text" 
+              id="country"
+              class="form-control" 
+              formControlName="country"
+              placeholder="USA">
+            
+            <!--
+              No validation errors
+              Field is optional, so no required error
+            -->
+          </div>
+
+          <!--
+            Submit button
+            
+            Disabled when:
+            - Form is invalid (validation errors exist)
+            - Is loading (already submitting)
+            
+            Full width for better mobile UX
+          -->
+          <button 
+            type="submit" 
+            class="btn btn-primary w-100"
+            [disabled]="registerForm.invalid || isLoading">
+            Create Account
+          </button>
+        </form>
+
+        <!--
+          Link to login page
+          
+          For users who already have an account
+          Common pattern: link to opposite auth page
+          
+          Why below form:
+          - Natural flow (try to register, if have account go to login)
+          - Doesn't distract from main action (creating account)
+        -->
+        <div class="text-center mt-3">
+          <p class="mb-0">
+            Already have an account? 
+            <a routerLink="/login" class="text-decoration-none">Login here</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--
+  Key differences from login template:
+  
+  1. More fields:
+     - firstName, lastName (side by side)
+     - country (optional)
+  
+  2. Password validation:
+     - Has minLength error message
+     - Shows hint in placeholder
+  
+  3. Column width:
+     - col-md-8 col-lg-5 (wider than login to fit more fields)
+  
+  4. Success message:
+     - Shows before redirect
+     - type="info" (blue instead of red)
+     - dismissible=false (user can't close it)
+  
+  5. Padding:
+     - py-5 on container (more vertical spacing)
+     - Accommodates taller form
+-->

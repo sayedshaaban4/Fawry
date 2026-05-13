@@ -1,0 +1,29 @@
+/**
+ * Loading Spinner Component Styles
+ * 
+ * Custom size for large spinner
+ * Bootstrap provides small and default, we add large
+ */
+
+/**
+ * Large spinner size
+ * 
+ * Default spinner: 2rem (32px)
+ * Small spinner (.spinner-border-sm): 1rem (16px)
+ * Large spinner (custom): 4rem (64px)
+ * 
+ * Usage: when loading an entire page or major section
+ */
+.spinner-large {
+  width: 4rem;
+  height: 4rem;
+  border-width: 0.3rem;
+}
+
+/**
+ * Smooth animation
+ * Bootstrap handles the rotation, this just makes it smoother
+ */
+.spinner-border {
+  animation-duration: 0.75s;
+}

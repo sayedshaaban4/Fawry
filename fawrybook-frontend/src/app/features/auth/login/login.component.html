@@ -1,0 +1,324 @@
+<!--
+  Login Component Template
+  
+  Centered login form with validation
+  Responsive design using Bootstrap classes
+  
+  Structure:
+  - Container for centering
+  - Card for form container
+  - Form with email and password fields
+  - Error message display
+  - Submit button
+  - Link to register page
+-->
+
+<!--
+  Main container
+  
+  .row: Bootstrap grid row
+  .justify-content-center: center horizontally
+  .align-items-center: center vertically
+  .min-vh-100: minimum 100% viewport height
+  
+  Result: form is centered on page
+-->
+<div class="row justify-content-center align-items-center min-vh-100">
+  <!--
+    Column for form
+    
+    .col-md-6: 50% width on medium screens and up
+    .col-lg-4: 33% width on large screens and up
+    
+    Responsive:
+    - Mobile: full width (no col-* class applies)
+    - Tablet: 50% width
+    - Desktop: 33% width
+  -->
+  <div class="col-md-6 col-lg-4">
+    <!--
+      Card container for form
+      
+      .card: Bootstrap card component
+      .shadow: box shadow for depth
+      
+      Why card:
+      - Nice container with padding and border
+      - Professional look
+      - Separates form from background
+    -->
+    <div class="card shadow">
+      <!--
+        Card header with title
+        
+        .card-header: Bootstrap header section
+        .bg-primary: primary color background
+        .text-white: white text
+        .text-center: center text
+      -->
+      <div class="card-header bg-primary text-white text-center">
+        <h3 class="mb-0">Login</h3>
+      </div>
+
+      <!--
+        Card body with form
+        
+        .card-body: Bootstrap body section with padding
+      -->
+      <div class="card-body p-4">
+        <!--
+          Show error message if exists
+          
+          *ngIf="errorMessage" - only show if errorMessage is not empty
+          (close)="errorMessage = ''" - clear error when user dismisses
+          
+          Why at top of form:
+          - First thing user sees
+          - Can't miss it
+          - Above the form that caused the error
+        -->
+        <app-error-message 
+          *ngIf="errorMessage" 
+          [message]="errorMessage"
+          (close)="errorMessage = ''">
+        </app-error-message>
+
+        <!--
+          Show loading spinner instead of form when submitting
+          
+          *ngIf="isLoading" - only show during API call
+          
+          Why replace form:
+          - Clear visual feedback
+          - Prevents user interaction during submit
+          - Clean UI (no disabled form fields)
+        -->
+        <app-loading-spinner 
+          *ngIf="isLoading" 
+          [message]="'Logging in...'">
+        </app-loading-spinner>
+
+        <!--
+          Login form
+          
+          *ngIf="!isLoading" - hide during loading
+          [formGroup]="loginForm" - bind to reactive form
+          (ngSubmit)="onSubmit()" - handle submit event
+          
+          Why formGroup:
+          - Links template to TypeScript FormGroup
+          - Enables form validation
+          - Tracks form state
+          
+          Why ngSubmit:
+          - Handles form submission (Enter key or button click)
+          - Prevents default browser form submit
+          - Calls our onSubmit() method
+        -->
+        <form *ngIf="!isLoading" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+          <!--
+            Email field
+            
+            .mb-3: margin-bottom 1rem (spacing between fields)
+          -->
+          <div class="mb-3">
+            <!--
+              Label for email input
+              
+              for="email" - associates label with input (clicking label focuses input)
+              .form-label: Bootstrap label styling
+              
+              Why label:
+              - Accessibility (screen readers)
+              - Better UX (clickable)
+              - Required for good form design
+            -->
+            <label for="email" class="form-label">Email</label>
+
+            <!--
+              Email input field
+              
+              type="email" - HTML5 email input (shows @ on mobile keyboard)
+              formControlName="email" - binds to email control in FormGroup
+              [class.is-invalid]="isFieldInvalid('email')" - add error class if invalid
+              
+              Bootstrap classes:
+              .form-control: Bootstrap input styling
+              .is-invalid: red border and text for errors
+              
+              Why formControlName:
+              - Links input to FormControl
+              - Enables validation
+              - Two-way binding to form value
+              
+              Why is-invalid binding:
+              - Shows error state visually
+              - Red border when field has errors
+              - Only shows after user has touched field
+            -->
+            <input 
+              type="email" 
+              id="email"
+              class="form-control" 
+              formControlName="email"
+              placeholder="Enter your email"
+              [class.is-invalid]="isFieldInvalid('email')">
+
+            <!--
+              Validation error messages
+              
+              Each error has its own div
+              Only shows if field has that specific error AND is touched
+              
+              .invalid-feedback: Bootstrap class for error text
+              - Red color
+              - Small font
+              - Only visible when .is-invalid is on input
+            -->
+            <div class="invalid-feedback" *ngIf="hasError('email', 'required')">
+              Email is required
+            </div>
+            <div class="invalid-feedback" *ngIf="hasError('email', 'email')">
+              Please enter a valid email address
+            </div>
+          </div>
+
+          <!--
+            Password field
+            
+            Same structure as email field
+          -->
+          <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+
+            <!--
+              Password input
+              
+              type="password" - hides characters with dots
+              formControlName="password" - binds to password control
+              
+              Why type="password":
+              - Security (hides password from shoulder surfers)
+              - Standard for password fields
+              - Browser may offer to save it
+            -->
+            <input 
+              type="password" 
+              id="password"
+              class="form-control" 
+              formControlName="password"
+              placeholder="Enter your password"
+              [class.is-invalid]="isFieldInvalid('password')">
+
+            <!--
+              Password validation error
+              
+              Only one error (required)
+              No minLength because this is login, not registration
+            -->
+            <div class="invalid-feedback" *ngIf="hasError('password', 'required')">
+              Password is required
+            </div>
+          </div>
+
+          <!--
+            Submit button
+            
+            type="submit" - triggers form (ngSubmit) when clicked
+            [disabled]="loginForm.invalid || isLoading" - disable in certain states
+            
+            Bootstrap classes:
+            .btn: base button class
+            .btn-primary: primary color button
+            .w-100: width 100% (full width of container)
+            
+            Why disable when invalid:
+            - Prevents submit of bad data
+            - Visual feedback (button looks disabled)
+            - Forces user to fix errors first
+            
+            Why disable when loading:
+            - Prevents double-submit
+            - Visual feedback that submit is processing
+          -->
+          <button 
+            type="submit" 
+            class="btn btn-primary w-100"
+            [disabled]="loginForm.invalid || isLoading">
+            Login
+          </button>
+        </form>
+
+        <!--
+          Link to register page
+          
+          .text-center: center text
+          .mt-3: margin-top 1rem
+          
+          Why below form:
+          - Natural flow (try to login first)
+          - If no account, then register
+          - Common pattern in auth forms
+        -->
+        <div class="text-center mt-3">
+          <p class="mb-0">
+            Don't have an account? 
+            <!--
+              Router link to register
+              
+              routerLink="/register" - navigate to register page
+              No page reload (SPA navigation)
+              
+              Why routerLink (not href):
+              - Faster (no page reload)
+              - Maintains app state
+              - Better UX
+            -->
+            <a routerLink="/register" class="text-decoration-none">Register here</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--
+  Bootstrap classes used:
+  
+  Layout:
+  - .row: flexbox container
+  - .col-md-6, .col-lg-4: responsive columns
+  - .justify-content-center: horizontal center
+  - .align-items-center: vertical center
+  - .min-vh-100: minimum viewport height 100%
+  
+  Card:
+  - .card: card container
+  - .card-header: header section
+  - .card-body: body section with padding
+  - .shadow: box shadow
+  
+  Form:
+  - .form-label: label styling
+  - .form-control: input styling
+  - .is-invalid: error state styling
+  - .invalid-feedback: error message styling
+  
+  Button:
+  - .btn: base button
+  - .btn-primary: primary color
+  - .w-100: full width
+  
+  Spacing:
+  - .mb-0, .mb-3: margin-bottom
+  - .mt-3: margin-top
+  - .p-4: padding 1.5rem
+  
+  Text:
+  - .text-center: center text
+  - .text-white: white text
+  - .text-decoration-none: remove underline
+  
+  Colors:
+  - .bg-primary: primary background color
+-->

@@ -1,0 +1,97 @@
+<!--
+  Loading Spinner Component Template
+  
+  Centered spinner with optional message
+  Uses Bootstrap spinner classes
+  
+  Structure:
+  - Container for centering
+  - Spinner animation
+  - Message text
+-->
+
+<!--
+  Main container
+  
+  .d-flex: display flex
+  .flex-column: stack items vertically
+  .align-items-center: center horizontally
+  .justify-content-center: center vertically
+  .py-5: padding top/bottom (3rem)
+  
+  Result: spinner is centered on page/container
+-->
+<div class="d-flex flex-column align-items-center justify-content-center py-5">
+  <!--
+    Bootstrap spinner
+    
+    .spinner-border: animated border spinner
+    .text-primary: uses primary theme color
+    role="status": accessibility - tells screen readers this is a status indicator
+    aria-hidden="true": hides spinner from screen readers (message is enough)
+    
+    Dynamic class binding:
+    [ngClass] - Angular directive to add classes conditionally
+    {
+      'spinner-border-sm': size === 'small',
+      'spinner-large': size === 'large'
+    }
+    
+    How it works:
+    - If size is 'small': adds 'spinner-border-sm' class
+    - If size is 'large': adds 'spinner-large' class
+    - Otherwise (medium): no extra class
+  -->
+  <div 
+    class="spinner-border text-primary" 
+    role="status"
+    [ngClass]="{
+      'spinner-border-sm': size === 'small',
+      'spinner-large': size === 'large'
+    }">
+    <!--
+      Visually hidden text for screen readers
+      
+      .visually-hidden: Bootstrap class - text exists in DOM but not visible
+      Screen readers will announce "Loading..." to blind users
+    -->
+    <span class="visually-hidden">Loading...</span>
+  </div>
+
+  <!--
+    Loading message below spinner
+    
+    {{ message }} - Angular interpolation, displays the @Input() value
+    .text-muted: gray text color (not too distracting)
+    .mt-3: margin-top 1rem (spacing from spinner)
+    
+    If parent passes message="Fetching posts...":
+    This will display "Fetching posts..."
+    
+    Default is "Loading..." from component
+  -->
+  <p class="text-muted mt-3">{{ message }}</p>
+</div>
+
+<!--
+  Bootstrap classes used:
+  
+  Flexbox:
+  - .d-flex: display flex
+  - .flex-column: vertical layout
+  - .align-items-center: horizontal center
+  - .justify-content-center: vertical center
+  
+  Spacing:
+  - .py-5: padding top/bottom 3rem
+  - .mt-3: margin-top 1rem
+  
+  Spinner:
+  - .spinner-border: rotating border animation
+  - .spinner-border-sm: smaller spinner (2rem)
+  - .text-primary: primary color
+  
+  Text:
+  - .text-muted: gray text
+  - .visually-hidden: hidden but accessible
+-->

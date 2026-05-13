@@ -1,0 +1,194 @@
+/**
+ * User Profile Component Styles
+ */
+
+/**
+ * Profile avatar styling
+ * 
+ * Large circular avatar icon
+ * Could be replaced with actual image
+ */
+.profile-avatar {
+  width: 120px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 50%;
+  color: white;
+}
+
+.profile-avatar i {
+  font-size: 80px;
+}
+
+/**
+ * Profile field styling
+ * 
+ * Clean, organized display of user information
+ */
+.profile-field {
+  padding: 0.75rem;
+  background-color: #f8f9fa;
+  border-radius: 0.5rem;
+  border-left: 3px solid #0d6efd;
+}
+
+.profile-field label {
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.profile-field p {
+  font-size: 1.1rem;
+}
+
+/**
+ * Stats list styling
+ * 
+ * Clean display of user statistics
+ */
+.stats-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem;
+  background-color: #f8f9fa;
+  border-radius: 0.5rem;
+  transition: transform 0.2s ease;
+}
+
+.stat-item:hover {
+  transform: translateX(5px);
+  background-color: #e9ecef;
+}
+
+/**
+ * Stat icon styling
+ * 
+ * Colored circle with icon
+ */
+.stat-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  flex-shrink: 0;
+}
+
+.stat-icon i {
+  font-size: 1.5rem;
+}
+
+/**
+ * Stat content
+ */
+.stat-content {
+  flex-grow: 1;
+}
+
+.stat-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #212529;
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 0.875rem;
+  color: #6c757d;
+  margin-top: 0.25rem;
+}
+
+/**
+ * Card styling
+ */
+.card {
+  border-radius: 0.5rem;
+  border: 1px solid #dee2e6;
+}
+
+.card-title {
+  font-weight: 600;
+  color: #495057;
+}
+
+/**
+ * Button hover effects
+ */
+.btn {
+  transition: all 0.2s ease;
+}
+
+.btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/**
+ * Disabled button
+ */
+.btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/**
+ * Icon spacing
+ */
+.bi {
+  vertical-align: middle;
+}
+
+/**
+ * Responsive adjustments
+ */
+@media (max-width: 992px) {
+  .profile-avatar {
+    width: 100px;
+    height: 100px;
+  }
+
+  .profile-avatar i {
+    font-size: 60px;
+  }
+}
+
+@media (max-width: 768px) {
+  .profile-avatar {
+    width: 80px;
+    height: 80px;
+  }
+
+  .profile-avatar i {
+    font-size: 50px;
+  }
+
+  .stat-item {
+    padding: 0.5rem;
+  }
+
+  .stat-icon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .stat-icon i {
+    font-size: 1.25rem;
+  }
+
+  .stat-value {
+    font-size: 1.25rem;
+  }
+}

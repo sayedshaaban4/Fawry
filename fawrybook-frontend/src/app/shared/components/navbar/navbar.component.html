@@ -1,0 +1,199 @@
+<!--
+  Navbar Component Template
+  
+  Bootstrap navbar with responsive design
+  
+  Structure:
+  - Brand logo/name (left side)
+  - Navigation links (center/left)
+  - Auth buttons (right side)
+  
+  Responsive:
+  - Collapses to hamburger menu on mobile (<992px)
+  - .navbar-expand-lg: expands on large screens and above
+-->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <div class="container-fluid">
+    <!--
+      Brand - clickable logo/name that goes to home page
+      
+      routerLink="/" - Angular Router link (no page reload)
+      .navbar-brand - Bootstrap class for branding
+    -->
+    <a class="navbar-brand" routerLink="/">
+      <strong>FawryBook</strong>
+    </a>
+
+    <!--
+      Mobile hamburger toggle button
+      
+      Shows only on small screens (hidden on lg+)
+      data-bs-toggle/target - Bootstrap JavaScript for collapse
+      
+      Why needed:
+      - Mobile screens are too small for horizontal menu
+      - Tapping this button shows/hides navbarNav
+    -->
+    <button 
+      class="navbar-toggler" 
+      type="button" 
+      data-bs-toggle="collapse" 
+      data-bs-target="#navbarNav"
+      aria-controls="navbarNav" 
+      aria-expanded="false" 
+      aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!--
+      Main navigation - collapses on mobile
+      
+      .collapse.navbar-collapse - hidden by default on mobile
+      .navbar-expand-lg shows it on large screens
+    -->
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <!--
+        Left side navigation links
+        
+        .navbar-nav - Bootstrap class for nav list
+        .me-auto - margin-end auto (pushes auth buttons to right)
+      -->
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <!--
+          Home link
+          
+          routerLink="/" - navigate to home page
+          routerLinkActive="active" - adds 'active' class when on this route
+          [routerLinkActiveOptions]="{exact: true}" - only active on exact match
+          
+          Why exact match:
+          - "/" matches all routes (/posts, /login, etc.)
+          - exact:true means only active when exactly on "/"
+        -->
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+            Home
+          </a>
+        </li>
+
+        <!--
+          Create Post link - only show if logged in
+          
+          *ngIf="isAuthenticated()" - Angular directive, removes element if false
+          
+          Why hide when not logged in:
+          - Create post requires authentication
+          - Guard will redirect to login anyway
+          - Better UX to not show unavailable actions
+        -->
+        <li class="nav-item" *ngIf="isAuthenticated()">
+          <a class="nav-link" routerLink="/create-post" routerLinkActive="active">
+            <i class="bi bi-plus-circle me-1"></i>
+            Create Post
+          </a>
+        </li>
+
+        <!--
+          Profile link - only show if logged in
+          
+          Navigate to user's profile page
+          Protected by auth guard
+        -->
+        <li class="nav-item" *ngIf="isAuthenticated()">
+          <a class="nav-link" routerLink="/profile" routerLinkActive="active">
+            <i class="bi bi-person me-1"></i>
+            Profile
+          </a>
+        </li>
+      </ul>
+
+      <!--
+        Right side - auth buttons
+        
+        Shows different content based on login state
+      -->
+      <div class="d-flex align-items-center">
+        <!--
+          Logged OUT state - show Login and Register buttons
+          
+          *ngIf="!isAuthenticated()" - only show when NOT logged in
+          ! is the logical NOT operator
+        -->
+        <div *ngIf="!isAuthenticated()">
+          <a routerLink="/login" class="btn btn-outline-light me-2">Login</a>
+          <a routerLink="/register" class="btn btn-light">Register</a>
+        </div>
+
+        <!--
+          Logged IN state - show user name and logout
+          
+          *ngIf="isAuthenticated() && currentUser" - show when logged in AND user data exists
+          
+          Why check both:
+          - isAuthenticated() checks if token exists
+          - currentUser check prevents errors if data hasn't loaded yet
+          - && means BOTH conditions must be true
+        -->
+        <div *ngIf="isAuthenticated() && currentUser" class="d-flex align-items-center">
+          <!--
+            User profile link
+            
+            Shows user's full name
+            routerLink="/profile" - navigate to profile page
+            .text-white - white text color
+            .text-decoration-none - removes underline from link
+          -->
+          <a routerLink="/profile" class="text-white text-decoration-none me-3">
+            <i class="bi bi-person-circle"></i>
+            <span class="ms-1">{{ currentUser.fullName }}</span>
+          </a>
+
+          <!--
+            Logout button
+            
+            (click)="logout()" - Angular event binding
+            Calls logout() method in component when clicked
+            
+            .btn-outline-light - Bootstrap outlined button
+          -->
+          <button (click)="logout()" class="btn btn-outline-light btn-sm">
+            Logout
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!--
+  Bootstrap classes used:
+  
+  Layout:
+  - .container-fluid: full-width container
+  - .d-flex: display flex
+  - .align-items-center: vertical center alignment
+  - .me-auto: margin-end auto (pushes items right)
+  - .me-2, .me-3: margin-end 0.5rem, 1rem
+  - .mb-2, .mb-lg-0: margin-bottom (responsive)
+  
+  Navbar:
+  - .navbar: base navbar class
+  - .navbar-expand-lg: responsive breakpoint
+  - .navbar-dark: dark theme (white text)
+  - .bg-primary: primary color background
+  - .navbar-brand: brand styling
+  - .navbar-toggler: mobile toggle button
+  - .navbar-nav: nav list
+  - .nav-item: nav item
+  - .nav-link: nav link styling
+  
+  Buttons:
+  - .btn: base button class
+  - .btn-outline-light: outlined white button
+  - .btn-light: solid white button
+  - .btn-sm: small button
+  
+  Text:
+  - .text-white: white text
+  - .text-decoration-none: no underline
+-->

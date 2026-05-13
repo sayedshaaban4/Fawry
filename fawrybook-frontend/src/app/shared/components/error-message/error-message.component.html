@@ -1,0 +1,145 @@
+<!--
+  Error Message Component Template
+  
+  Bootstrap alert with dismissible close button
+  Different colors for different message types
+  
+  Only renders if message is not empty
+-->
+
+<!--
+  Main alert container
+  
+  *ngIf="message" - only show if message exists
+  If message is empty string, null, or undefined: component is hidden
+  
+  Why:
+  - No point showing empty alert box
+  - Parent can hide alert by setting message = ''
+  - Cleaner UI (no placeholder for errors)
+  
+  Dynamic classes:
+  [ngClass] - add classes based on component properties
+  {
+    'alert-danger': type === 'danger',
+    'alert-warning': type === 'warning',
+    'alert-info': type === 'info',
+    'alert-dismissible': dismissible
+  }
+  
+  Explanation:
+  - alert-danger: red background (for errors)
+  - alert-warning: yellow background (for warnings)
+  - alert-info: blue background (for info)
+  - alert-dismissible: makes room for close button
+  
+  role="alert" - accessibility, tells screen readers this is an alert
+-->
+<div 
+  *ngIf="message" 
+  class="alert"
+  [ngClass]="{
+    'alert-danger': type === 'danger',
+    'alert-warning': type === 'warning',
+    'alert-info': type === 'info',
+    'alert-dismissible': dismissible
+  }"
+  role="alert">
+  
+  <!--
+    Error icon (only for danger type)
+    
+    *ngIf="type === 'danger'" - only show red X icon for errors
+    .me-2 - margin-end 0.5rem (space between icon and text)
+    
+    Why conditional:
+    - Warnings and info might have different icons
+    - Or no icon at all
+    - Errors are most critical, so they get visual emphasis
+  -->
+  <strong *ngIf="type === 'danger'">
+    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+  </strong>
+
+  <!--
+    Warning icon
+    *ngIf="type === 'warning'" - only for warnings
+  -->
+  <strong *ngIf="type === 'warning'">
+    <i class="bi bi-exclamation-circle-fill me-2"></i>
+  </strong>
+
+  <!--
+    Info icon
+    *ngIf="type === 'info'" - only for info messages
+  -->
+  <strong *ngIf="type === 'info'">
+    <i class="bi bi-info-circle-fill me-2"></i>
+  </strong>
+
+  <!--
+    The actual error message
+    
+    {{ message }} - Angular interpolation
+    Displays the @Input() message value
+    
+    Examples:
+    - "Invalid email or password"
+    - "Network error. Please try again."
+    - "This field is required"
+  -->
+  {{ message }}
+
+  <!--
+    Close button (optional)
+    
+    *ngIf="dismissible" - only show if dismissible=true
+    (click)="onClose()" - calls component method when clicked
+    
+    Bootstrap classes:
+    .btn-close - Bootstrap close button styling
+    data-bs-dismiss="alert" - Bootstrap JavaScript for animation
+    aria-label="Close" - accessibility label for screen readers
+    
+    Flow:
+    1. User clicks X
+    2. onClose() method runs
+    3. close.emit() sends event to parent
+    4. Parent clears message
+    5. *ngIf="message" becomes false
+    6. Component disappears
+  -->
+  <button 
+    *ngIf="dismissible" 
+    type="button" 
+    class="btn-close" 
+    (click)="onClose()"
+    aria-label="Close">
+  </button>
+</div>
+
+<!--
+  Bootstrap classes used:
+  
+  Alert:
+  - .alert: base alert styling
+  - .alert-danger: red background (errors)
+  - .alert-warning: yellow background (warnings)
+  - .alert-info: blue background (info)
+  - .alert-dismissible: adds padding for close button
+  
+  Button:
+  - .btn-close: close button styling (X icon)
+  
+  Spacing:
+  - .me-2: margin-end 0.5rem
+  
+  Icons (Bootstrap Icons):
+  - .bi: base icon class
+  - .bi-exclamation-triangle-fill: filled warning triangle
+  - .bi-exclamation-circle-fill: filled exclamation circle
+  - .bi-info-circle-fill: filled info circle
+  
+  Note: Bootstrap Icons must be included in index.html:
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+-->

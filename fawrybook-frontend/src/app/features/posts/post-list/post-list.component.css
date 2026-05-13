@@ -1,0 +1,183 @@
+/**
+ * Post List Component Styles
+ * 
+ * Enhances Bootstrap card styling
+ * Adds hover effects and transitions
+ */
+
+/**
+ * Post card styling
+ * 
+ * Adds hover effect and smooth transition
+ * Makes cards feel interactive
+ */
+.post-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  border: 1px solid #dee2e6;
+  overflow: hidden;
+  word-wrap: break-word;
+}
+
+.post-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.15);
+}
+
+/**
+ * Post title link styling
+ * 
+ * Makes title change color on hover
+ * Indicates it's clickable
+ */
+.card-title {
+  word-wrap: break-word;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+.card-title a {
+  transition: color 0.2s ease;
+}
+
+.card-title a:hover {
+  color: #0d6efd !important;
+}
+
+/**
+ * Post stats styling
+ * 
+ * Ensures icons and text are aligned
+ * Consistent spacing
+ */
+.post-stats {
+  font-size: 0.9rem;
+}
+
+.post-stats i {
+  font-size: 1rem;
+}
+
+/**
+ * Badge styling for tags
+ * 
+ * Makes tags more subtle
+ * Better visual hierarchy
+ */
+.badge {
+  font-weight: 500;
+  padding: 0.25rem 0.5rem;
+}
+
+/**
+ * Empty state icon
+ * 
+ * Large icon for empty state
+ */
+.display-1 {
+  font-size: 5rem;
+  opacity: 0.5;
+}
+
+/**
+ * Card body flex layout
+ * 
+ * Ensures "Read More" button is at bottom
+ * Even when content length varies
+ */
+.card-body {
+  min-height: 300px;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+.card-text {
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+/**
+ * Rating badge animation
+ * 
+ * Slight pulse effect on hover
+ */
+.badge {
+  transition: transform 0.2s ease;
+}
+
+.post-card:hover .badge {
+  transform: scale(1.1);
+}
+
+/**
+ * Responsive adjustments
+ * 
+ * Smaller cards on mobile
+ */
+@media (max-width: 768px) {
+  .card-body {
+    min-height: auto;
+    padding: 1rem;
+  }
+  
+  .post-card:hover {
+    transform: translateY(-4px);
+  }
+  
+  .card-title {
+    font-size: 1.1rem;
+  }
+  
+  .post-stats {
+    font-size: 0.85rem;
+  }
+}
+
+/**
+ * Reaction button styling
+ * 
+ * Make buttons compact and visually appealing
+ * Consistent with Bootstrap theme
+ */
+.btn-sm {
+  font-size: 0.85rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+}
+
+/**
+ * Button hover effects
+ * 
+ * Slight scale animation on hover
+ * Makes buttons feel responsive
+ */
+.btn-outline-success:hover,
+.btn-outline-danger:hover {
+  transform: scale(1.05);
+}
+
+.btn-outline-success:active,
+.btn-outline-danger:active {
+  transform: scale(0.95);
+}
+
+/**
+ * Disabled button state
+ * 
+ * Show loading cursor when disabled
+ */
+.btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+/**
+ * Spinner in button
+ * 
+ * Center spinner when loading
+ */
+.spinner-border-sm {
+  width: 1rem;
+  height: 1rem;
+  border-width: 0.15em;
+}

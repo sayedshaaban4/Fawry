@@ -1,0 +1,217 @@
+<!--
+  Post Form Component Template
+  
+  Form for creating and editing blog posts
+-->
+
+<div class="container py-4">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <!-- Page header -->
+      <div class="mb-4">
+        <h2>{{ pageTitle }}</h2>
+        <p class="text-muted">Share your knowledge with the community</p>
+      </div>
+
+      <!-- Error message -->
+      <app-error-message 
+        *ngIf="errorMessage" 
+        [message]="errorMessage"
+        (close)="errorMessage = ''">
+      </app-error-message>
+
+      <!-- Loading spinner (for edit mode loading) -->
+      <app-loading-spinner 
+        *ngIf="isLoading" 
+        [message]="'Loading post...'">
+      </app-loading-spinner>
+
+      <!-- Post form -->
+      <div *ngIf="!isLoading" class="card shadow-sm">
+        <div class="card-body p-4">
+          <form [formGroup]="postForm" (ngSubmit)="onSubmit()">
+            <!--
+              Title field
+            -->
+            <div class="mb-4">
+              <label for="title" class="form-label">
+                Title <span class="text-danger">*</span>
+              </label>
+              <input 
+                type="text" 
+                id="title"
+                class="form-control form-control-lg" 
+                formControlName="title"
+                placeholder="Enter an engaging title for your post"
+                [class.is-invalid]="isFieldInvalid('title')">
+              
+              <div class="invalid-feedback" *ngIf="hasError('title', 'required')">
+                Title is required
+              </div>
+              <div class="invalid-feedback" *ngIf="hasError('title', 'minlength')">
+                Title must be at least 3 characters
+              </div>
+              <div class="form-text">
+                Make it clear and descriptive
+              </div>
+            </div>
+
+            <!--
+              Content field
+              
+              Textarea for post content
+              Large area for writing
+            -->
+            <div class="mb-4">
+              <label for="content" class="form-label">
+                Content <span class="text-danger">*</span>
+              </label>
+              <textarea 
+                id="content"
+                class="form-control" 
+                formControlName="content"
+                rows="15"
+                placeholder="Write your blog post content here...
+
+You can write detailed explanations, code examples, tutorials, or any technical content you'd like to share."
+                [class.is-invalid]="isFieldInvalid('content')">
+              </textarea>
+              
+              <div class="invalid-feedback" *ngIf="hasError('content', 'required')">
+                Content is required
+              </div>
+              <div class="invalid-feedback" *ngIf="hasError('content', 'minlength')">
+                Content must be at least 10 characters
+              </div>
+              <div class="form-text">
+                Minimum 10 characters. Be detailed and informative.
+              </div>
+            </div>
+
+            <!--
+              Tags field
+              
+              Comma-separated tags
+              Optional field
+            -->
+            <div class="mb-4">
+              <label for="tags" class="form-label">
+                Tags 
+                <small class="text-muted">(optional)</small>
+              </label>
+              <input 
+                type="text" 
+                id="tags"
+                class="form-control" 
+                formControlName="tags"
+                placeholder="e.g., Angular, TypeScript, Tutorial">
+              
+              <div class="form-text">
+                Separate tags with commas. Example: Angular, TypeScript, Web Development
+              </div>
+            </div>
+
+            <!--
+              Preview section (optional enhancement)
+              Could show how tags will appear
+            -->
+            <div *ngIf="postForm.get('tags')?.value" class="mb-4">
+              <label class="form-label">Tag Preview:</label>
+              <div>
+                <span 
+                  *ngFor="let tag of postForm.get('tags')?.value.split(','); let i = index" 
+                  class="badge bg-secondary me-1"
+                  [hidden]="tag.trim() === ''">
+                  {{ tag.trim() }}
+                </span>
+              </div>
+            </div>
+
+            <!--
+              Form actions
+            -->
+            <div class="d-flex justify-content-between pt-3 border-top">
+              <!--
+                Cancel button
+              -->
+              <button 
+                type="button" 
+                class="btn btn-outline-secondary"
+                (click)="cancel()"
+                [disabled]="isSubmitting">
+                Cancel
+              </button>
+
+              <!--
+                Submit button
+                
+                Text changes based on mode (Create/Update)
+                Disabled when invalid or submitting
+              -->
+              <button 
+                type="submit" 
+                class="btn btn-primary px-4"
+                [disabled]="postForm.invalid || isSubmitting">
+                <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm me-2"></span>
+                <span *ngIf="!isEditMode && !isSubmitting">
+                  <i class="bi bi-plus-circle me-2"></i>
+                  Create Post
+                </span>
+                <span *ngIf="!isEditMode && isSubmitting">Creating...</span>
+                <span *ngIf="isEditMode && !isSubmitting">
+                  <i class="bi bi-check-circle me-2"></i>
+                  Update Post
+                </span>
+                <span *ngIf="isEditMode && isSubmitting">Updating...</span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!--
+        Writing tips (optional section)
+      -->
+      <div class="card mt-4 bg-light border-0">
+        <div class="card-body">
+          <h6 class="card-title">
+            <i class="bi bi-lightbulb me-2"></i>
+            Writing Tips
+          </h6>
+          <ul class="mb-0 small">
+            <li>Use a clear, descriptive title that summarizes your post</li>
+            <li>Break up long content with paragraphs and sections</li>
+            <li>Include code examples if relevant</li>
+            <li>Add appropriate tags to help others find your post</li>
+            <li>Proofread before publishing</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--
+  Form behavior:
+  
+  1. Create mode (/create-post):
+     - Empty form
+     - Submit calls createPost()
+     - Redirects to new post detail page
+  
+  2. Edit mode (/edit-post/:id):
+     - Form populated with existing data
+     - Submit calls updatePost()
+     - Redirects back to post detail page
+  
+  3. Validation:
+     - Title: required, min 3 characters
+     - Content: required, min 10 characters
+     - Tags: optional
+  
+  4. Tag handling:
+     - User enters: "Angular, TypeScript, Tutorial"
+     - Split by comma: ["Angular", "TypeScript", "Tutorial"]
+     - Trim whitespace: ["Angular", "TypeScript", "Tutorial"]
+     - Send to backend as array
+-->

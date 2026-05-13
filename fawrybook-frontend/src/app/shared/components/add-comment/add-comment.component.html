@@ -1,0 +1,117 @@
+<!--
+  Add Comment Component Template
+  
+  Form for adding new comments
+-->
+
+<div class="add-comment-container">
+  <!--
+    Section header
+  -->
+  <h6 class="mb-3">
+    <i class="bi bi-chat-left-dots me-2"></i>
+    Add a Comment
+  </h6>
+
+  <!--
+    Error message
+    
+    Shows when parent sets errorMessage
+    User can dismiss
+  -->
+  <app-error-message 
+    *ngIf="errorMessage" 
+    [message]="errorMessage"
+    (close)="errorMessage = ''">
+  </app-error-message>
+
+  <!--
+    Comment form
+  -->
+  <form [formGroup]="commentForm" (ngSubmit)="onSubmit()">
+    <!--
+      Content textarea
+      
+      Main input field for comment text
+      Rows: 3 (compact but usable)
+      Auto-expands if user types more
+    -->
+    <div class="mb-3">
+      <textarea 
+        class="form-control" 
+        formControlName="content"
+        rows="3"
+        placeholder="Write your comment here..."
+        [class.is-invalid]="isFieldInvalid('content')">
+      </textarea>
+      
+      <!--
+        Validation errors
+      -->
+      <div class="invalid-feedback" 
+           *ngIf="hasError('content', 'required')">
+        Comment cannot be empty
+      </div>
+      <div class="invalid-feedback" 
+           *ngIf="hasError('content', 'minlength')">
+        Comment must have at least 1 character
+      </div>
+      
+      <!--
+        Helper text
+      -->
+      <div class="form-text">
+        Share your thoughts, ask questions, or provide feedback
+      </div>
+    </div>
+
+    <!--
+      Submit button
+      
+      Disabled when:
+      - Form is invalid
+      - Submission in progress
+      
+      Shows spinner when submitting
+    -->
+    <button 
+      type="submit" 
+      class="btn btn-primary"
+      [disabled]="commentForm.invalid || isSubmitting">
+      <span *ngIf="!isSubmitting">
+        <i class="bi bi-send me-2"></i>
+        Post Comment
+      </span>
+      <span *ngIf="isSubmitting">
+        <span class="spinner-border spinner-border-sm me-2"></span>
+        Posting...
+      </span>
+    </button>
+  </form>
+</div>
+
+<!--
+  Component flow:
+  
+  1. User types comment in textarea
+  2. Form validates (required, min 1 char)
+  3. User clicks "Post Comment"
+  4. Component emits submitComment event with CommentRequest
+  5. Parent component handles:
+     - Set isSubmitting = true (shows loading state)
+     - Call API to save comment
+     - On success:
+       - Add comment to list
+       - Call this.addCommentComponent.resetForm()
+       - Clear errorMessage
+     - On error:
+       - Set errorMessage
+     - Set isSubmitting = false
+  6. Form resets on success
+  
+  Why this design:
+  - Component doesn't know about API calls
+  - Parent manages data flow
+  - Component is reusable anywhere
+  - Clean separation of concerns
+-->

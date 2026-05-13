@@ -1,0 +1,51 @@
+/**
+ * Error Message Component Styles
+ * 
+ * Bootstrap handles most styling
+ * These are just small enhancements
+ */
+
+/**
+ * Add smooth slide-in animation when alert appears
+ * 
+ * @keyframes slideDown: defines the animation
+ * - from: starts slightly above and invisible
+ * - to: ends at normal position and visible
+ * 
+ * animation: applies to .alert
+ * - slideDown: animation name
+ * - 0.3s: duration
+ * - ease-out: easing function (starts fast, ends slow)
+ */
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.alert {
+  animation: slideDown 0.3s ease-out;
+}
+
+/**
+ * Make sure alert has some spacing
+ * 
+ * margin-bottom: space below alert
+ * Prevents alert from touching content below it
+ */
+.alert {
+  margin-bottom: 1rem;
+}
+
+/**
+ * Icon styling
+ * Ensure icons are vertically aligned with text
+ */
+.alert i {
+  vertical-align: middle;
+}

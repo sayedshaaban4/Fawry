@@ -1,0 +1,89 @@
+/**
+ * Comment List Component Styles
+ */
+
+/**
+ * Comment item styling
+ * 
+ * Adds hover effect for better UX
+ * Smooth transition
+ */
+.comment-item {
+  transition: background-color 0.2s ease;
+}
+
+.comment-item:hover {
+  background-color: #f8f9fa;
+}
+
+/**
+ * Remove border from last comment
+ * 
+ * Cleaner visual appearance
+ */
+.comment-item:last-child {
+  border-bottom: none !important;
+}
+
+/**
+ * Comment content styling
+ * 
+ * Preserve whitespace and line breaks
+ * Better readability
+ */
+.comment-content {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  line-height: 1.6;
+}
+
+/**
+ * Author name styling
+ * 
+ * Make names stand out
+ */
+.fw-bold {
+  font-weight: 600 !important;
+}
+
+/**
+ * Empty state icon
+ * 
+ * Large, subtle icon
+ */
+.display-4 {
+  font-size: 3rem;
+  opacity: 0.3;
+}
+
+/**
+ * Comments container
+ * 
+ * Consistent spacing
+ */
+.comments-container {
+  margin-top: 1rem;
+}
+
+/**
+ * Avatar icon
+ * 
+ * Consistent sizing
+ */
+.bi-person-circle {
+  color: #6c757d;
+}
+
+/**
+ * Load more button
+ * 
+ * Smooth hover effect
+ */
+.btn-outline-primary {
+  transition: all 0.2s ease;
+}
+
+.btn-outline-primary:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 4px rgba(13, 110, 253, 0.2);
+}

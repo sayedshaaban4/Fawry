@@ -1,0 +1,60 @@
+/**
+ * Login Component Styles
+ * 
+ * Minimal custom styles
+ * Bootstrap handles most styling
+ */
+
+/**
+ * Card hover effect
+ * 
+ * Subtle lift on hover for better UX
+ * Makes the form feel more interactive
+ */
+.card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+}
+
+/**
+ * Form control focus state
+ * 
+ * Custom focus color to match theme
+ * Bootstrap provides default, this enhances it
+ */
+.form-control:focus {
+  border-color: #0d6efd;
+  box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+}
+
+/**
+ * Button states
+ * 
+ * Smooth transitions for hover and disabled states
+ */
+.btn {
+  transition: all 0.3s ease;
+}
+
+.btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/**
+ * Link styling in auth forms
+ * 
+ * Make links more prominent
+ */
+a {
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  text-decoration: underline !important;
+}

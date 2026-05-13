@@ -1,0 +1,23 @@
+﻿/**
+ * App Component Styles
+ * 
+ * Global styles for the root component
+ * Most styling is handled by Bootstrap and component-specific CSS
+ */
+
+/**
+ * Ensure full viewport height
+ * Makes sure the app fills the entire screen
+ */
+:host {
+  display: block;
+  min-height: 100vh;
+  background-color: #f8f9fa;
+}
+
+/**
+ * Smooth scrolling for anchor links
+ */
+html {
+  scroll-behavior: smooth;
+}
